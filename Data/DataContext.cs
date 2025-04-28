@@ -11,5 +11,6 @@ namespace ExpenseTracker.Data
         }
 
         public DbSet<RegistrationModel> RegistrationModels { get; set; }
+        public DbSet<LoginModel> LoginModels { get; set; }
     }
 }
