@@ -13,16 +13,21 @@ namespace ExpenseTracker.Controllers
         public LoginController(ILoginService loginService) =>
             _loginService = loginService;
 
-        [HttpGet]
-        public async Task<IActionResult> Get([FromQuery]string email, [FromQuery]string password)
+        [HttpPost]
+        public async Task<IActionResult> Login([FromBody] LoginModel login)
         {
-            var account = await _loginService.GetByEmail(email, password);
+            if (login == null || string.IsNullOrEmpty(login.Email) || string.IsNullOrEmpty(login.Password))
+            {
+                return BadRequest("Email or Password is required");
+            }
+
+            var account = await _loginService.GetByEmail(login.Email, login.Password);
 
             if (account == null)
             {
-                return NotFound();
+                return Unauthorized("Invalid Username or Password");
             }
-            return Ok();
+            return Ok(new { Message = "Login Successful", Account = account });
 
         }
 
