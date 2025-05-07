@@ -1,4 +1,5 @@
-﻿using ExpenseTracker.Models;
+﻿using ExpenseTracker.Data;
+using ExpenseTracker.Models;
 using ExpenseTracker.Services;
 using Microsoft.AspNetCore.Mvc;
 
@@ -9,9 +10,14 @@ namespace ExpenseTracker.Controllers
     public class LoginController : Controller
     {
         private readonly ILoginService _loginService;
+        private readonly TokenGenerator _tokenGenerator;
 
-        public LoginController(ILoginService loginService) =>
+        public LoginController(ILoginService loginService, TokenGenerator tokenGenerator)
+        {
             _loginService = loginService;
+            _tokenGenerator = tokenGenerator;
+        }
+
 
         [HttpPost]
         public async Task<IActionResult> Login([FromBody] LoginModel login)
@@ -27,7 +33,14 @@ namespace ExpenseTracker.Controllers
             {
                 return Unauthorized("Invalid Username or Password");
             }
-            return Ok(new { Message = "Login Successful", Account = account });
+
+            var token = _tokenGenerator.GenerateToken(account.Email);
+
+            return Ok(new 
+            {
+                Message = "Login Successful",
+                Token = token
+            });
 
         }
 
