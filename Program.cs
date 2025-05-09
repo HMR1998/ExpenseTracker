@@ -37,9 +37,9 @@ builder.Services.AddDbContext<DataContext>(options =>
 
 builder.Services.AddScoped<IRegistrationService, RegistrationService>();
 builder.Services.AddScoped<ILoginService, LoginService>();
-builder.Services.AddScoped<IExpenseService, ExpenseService>();
 
 builder.Services.AddSingleton<TokenGenerator>();
+builder.Services.AddSingleton<IExpenseService, ExpenseService>();
 
 var app = builder.Build();
 
