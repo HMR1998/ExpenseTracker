@@ -22,5 +22,31 @@ namespace ExpenseTracker.Services
             await _dataContext.SaveChangesAsync();
             return expense.Entity;
         }
+
+        public async Task<bool> UpdateExpense(int id, ExpenseModel expenseModel)
+        {
+            var existingExpense = await _dataContext.ExpenseModels.FindAsync(id);
+
+            if (existingExpense == null) return false;
+
+            existingExpense.ExpenseDescription = expenseModel.ExpenseDescription;
+            existingExpense.ExpenseTitle = expenseModel.ExpenseTitle;
+            existingExpense.ExpenseCost = expenseModel.ExpenseCost;
+            existingExpense.Categories = expenseModel.Categories;
+
+            await _dataContext.SaveChangesAsync();
+            return true;
+        }
+
+        public async Task<bool> DeleteExpense(int id)
+        {
+            var existingExpense = await _dataContext.ExpenseModels.FindAsync(id);
+
+            if ( existingExpense == null) return false;
+
+            _dataContext.ExpenseModels.Remove(existingExpense);
+            await _dataContext.SaveChangesAsync();
+            return true;
+        }
     }
 }
