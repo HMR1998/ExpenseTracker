@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace ExpenseTracker.Services
 {
-    public class ExpenseService
+    public class ExpenseService: IExpenseService
     {
         private readonly DataContext _dataContext;
 
